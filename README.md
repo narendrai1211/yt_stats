@@ -1,6 +1,6 @@
 # yt_stats
 
-Run File by 
+Step by Step Procedure
 
 
 1. Add Required Youtube Channel Links in the text file which will be present wherever you run the script
