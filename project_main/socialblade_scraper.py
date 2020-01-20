@@ -52,7 +52,11 @@ def write_to_file(contents):
         csv_writer_inside.writerows(contents)
 
 
-data = read_file(filename)
-req_urls = generate_required_url(data)
-content = scrape_page(req_urls)
-write_to_file(content)
+def main_program():
+    data = read_file(filename)
+    req_urls = generate_required_url(data)
+    content = scrape_page(req_urls)
+    write_to_file(content)
+
+
+main_program()
