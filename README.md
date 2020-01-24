@@ -4,7 +4,7 @@ Step by Step Procedure
 
 
 1. Add Required Youtube Channel Links in the text file which will be present wherever you run the script
-2. Give that filename same as filename variable in the program
+2. Give that file name as (file_urls.txt)
 3. Run the program 
 
 Command -> 
