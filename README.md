@@ -12,5 +12,5 @@ python3 socialblade_scraper.py
 
 
 gives data in a csv file having headers where the program resides-> 
-Uploads, Subscribers, Views, Country_Code, Channel_Type, Created_Date
+Sr. No., Channel Name, Uploads, Subscribers, Views, Country_Code, Channel_Type, Created_Date
 Used Python Version 3.7 for this scraper
