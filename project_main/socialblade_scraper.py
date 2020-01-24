@@ -2,7 +2,6 @@ import requests
 import csv
 from bs4 import BeautifulSoup
 filename = 'file_urls.txt'
-csv_body = []
 main_list = []
 social_b = []
 headers = {
@@ -20,36 +19,57 @@ def generate_required_url(data):
     for i_each in data:
         page_type = i_each.split('/')[-2]
         channel_id = i_each.split('/')[-1]
-        print(channel_id)
-        print(page_type)
         request_url = 'https://socialblade.com/youtube/'+page_type+'/'+channel_id
         social_b.append(request_url.strip())
     return social_b
 
 
 def scrape_page(social):
+    cnt = 1
+    print(len(social))
     for request in social:
+        print(request)
         data2 = requests.get(request, headers=headers)
         site_text = data2.text
         soup = BeautifulSoup(site_text, 'lxml')
         d = soup.find('div', id='YouTubeUserTopInfoBlockTop')
+        channel_name = d.find('h1').text
         data_2 = d.find_all('div', class_='YouTubeUserTopInfo')
-        csv_body.clear()
+        required_form_list = [cnt, channel_name]
         for i in data_2:
             d = i.find_all('span', style="font-weight: bold;")
-            for i_data in d:
-                required_form = i_data.text.replace(',', '')
-                csv_body.append(required_form)
-        main_list.append(csv_body)
+            for each_element in d:
+                required_form = each_element.text.replace(',', '')
+                required_form_list.append(required_form)
+        print(required_form_list)
+        main_list.append(required_form_list)
+        cnt += 1
     return main_list
 
 
+def check_length(contents, header):
+    for i in contents:
+        if len(i) == len(header):
+            return 0
+        else:
+            print('Column Mis-match cannot write data')
+            return 1
+
+
 def write_to_file(contents):
-    list_header = ['Uploads', 'Subscribers', 'Views', 'Country_Code', 'Channel_Type','Created_Date']
-    with open('yt_stats.csv', 'w') as file:
-        csv_writer_inside = csv.writer(file, quoting=csv.QUOTE_NONE, escapechar=' ')
-        csv_writer_inside.writerow(list_header)
-        csv_writer_inside.writerows(contents)
+    print(contents)
+    list_header = ['Sr.No.', 'Channel Name', 'Uploads', 'Subscribers', 'Views', 'Country_Code', 'Channel_Type','Created_Date']
+    d = check_length(contents, list_header)
+    if d == 1:
+        print('Cannot Write Data')
+
+    else:
+        print('Writing Data')
+        with open('yt_stats.csv', 'w') as file:
+            csv_writer_inside = csv.writer(file, quoting=csv.QUOTE_NONE, escapechar=' ')
+            csv_writer_inside.writerow(list_header)
+            csv_writer_inside.writerows(main_list)
+        print('Written Data')
 
 
 def main_program():
